@@ -6,11 +6,31 @@ from django.utils.http import urlencode
 from . models import Collection, Product, Customer, Order
 
 # Register your models here.
+
+class InventoryFilter(admin.SimpleListFilter):
+    title = 'inventory'
+    parameter_name = 'inventory'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('<10', 'low'),
+            ('>10', 'ok'),
+        ]
+    
+    def queryset(self, request, queryset):
+        if self.value() == '<10':
+            return queryset.filter(inventory__lt=10)
+        elif self.value() == '>10':
+            return queryset.filter(inventory__gte=10)
+
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['title', 'price', 'inventory_status', 'collection']
     list_per_page = 10
     list_editable = ['price']
+    list_filter = ['collection', 'last_update', InventoryFilter]
     list_select_related = ['collection']
 
     @admin.display(ordering='inventory')
