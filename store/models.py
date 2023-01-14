@@ -45,6 +45,9 @@ class Customer(models.Model):
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default='B')
 
+    def __str__(self) -> str:
+        return f'{self.first_name}, {self.last_name}'
+
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
