@@ -5,10 +5,10 @@ from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .filters import ProductFilter
-from .models import Product, Collection, OrderItem, Review, Cart, CartItem
-from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin
+from .models import Customer, Product, Collection, OrderItem, Review, Cart, CartItem
+from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from .serializers import AddCartItemSerializer, CartItemSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, UpdateCartItemSerializer
+from .serializers import AddCartItemSerializer, CartItemSerializer, CustomerSerializer, ProductSerializer, CollectionSerializer, ReviewSerializer, CartSerializer, UpdateCartItemSerializer
 
 
 # Create your views here.
@@ -68,4 +68,6 @@ class CartItemViewSet(ModelViewSet):
                 .select_related('product')
 
 
-
+class CustomerViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+        queryset = Customer.objects.all()
+        serializer_class = CustomerSerializer
